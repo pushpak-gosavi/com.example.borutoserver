@@ -1,4 +1,4 @@
-package com.example.rootes
+package com.example.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*
