@@ -402,31 +402,51 @@ class HeroRepositoryImp : HeroRepository {
             success = true,
             message = "ok",
             prevPage = calculatePage(page = page)[PREVIOUS_PAGE_KEY],
-            nextPage = calculatePage(page= page) [NEXT_PAGE_KEY],
+            nextPage = calculatePage(page = page)[NEXT_PAGE_KEY],
             heroes = heroes[page]!!
         )
     }
 
-    private fun calculatePage(page:Int): Map<String, Int?>{
-        var prevPage : Int? = page
-        var nextPage : Int? = page
-        if(page in 1..4){
+    private fun calculatePage(page: Int): Map<String, Int?> {
+        var prevPage: Int? = page
+        var nextPage: Int? = page
+        if (page in 1..4) {
             nextPage = nextPage?.plus(1)
         }
-        if (page in 2..5){
+        if (page in 2..5) {
             prevPage = prevPage?.minus(1)
         }
-        if(page == 1){
+        if (page == 1) {
             prevPage = null
         }
-        if (page == 5){
+        if (page == 5) {
             nextPage = null
         }
-        return  mapOf(PREVIOUS_PAGE_KEY to prevPage, NEXT_PAGE_KEY to nextPage)
+        return mapOf(PREVIOUS_PAGE_KEY to prevPage, NEXT_PAGE_KEY to nextPage)
 
     }
 
-    override suspend fun searchHero(name: String): ApiResponse {
-        TODO("Not yet implemented")
+    override suspend fun searchHero(name: String?): ApiResponse {
+        return ApiResponse(
+            success = true,
+            message = "ok",
+            heroes = findHeroes(name=name)
+        )
+    }
+
+    private fun findHeroes(name: String?): List<Hero> {
+        val founded = mutableListOf<Hero>()
+        return if (!name.isNullOrEmpty()) {
+            heroes.forEach { (_, heroes) ->
+                heroes.forEach { hero ->
+                    if (hero.name.lowercase().contains(name.lowercase())) {
+                        founded.add(hero)
+                    }
+                }
+            }
+            founded
+        } else {
+            emptyList()
+        }
     }
 }
