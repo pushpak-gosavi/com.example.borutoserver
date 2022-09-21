@@ -3,7 +3,7 @@ package com.example.repository
 import com.example.models.ApiResponse
 import com.example.models.Hero
 
-interface HeroRepository {
+ interface HeroRepository {
 
     val heroes : Map<Int, List<Hero>>
 
